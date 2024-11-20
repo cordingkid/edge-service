@@ -6,14 +6,33 @@ server:
   shutdown: graceful
 
 spring:
+  redis:
+    connect-timeout: 2s
+    host: localhost
+    port: 6379
+    timeout: 1s
   application:
     name: edge-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
   cloud:
     gateway:
-      # 재시도 필터 적용
+      # http client 타임아웃 설정
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 5s
+        pool:
+          type: elastic # 연결 풀 유형 (elastic, fixed, disabled 중 하나)
+          max-idle-time: 15s # 통신 채널이 닫히기 전 대기 시간
+          max-life-time: 60s # 통신 채널 열려있는 시간
       default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter:
+              replenishRate: 10 # 초당 커빗에 떨어지는 토큰 수
+              burstCapacity: 20 # 최대 20개 요청까지 허용
+              requestedTokens: 1 # 하나의 요청에 처리될 토큰
+        # 재시도 필터 적용
         - name: Retry
           args:
             retries: 3
@@ -25,14 +44,6 @@ spring:
               maxBackOff: 500ms
               factor: 2
               basedOnPreviousValue: false
-      # http client 타임아웃 설정
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 5s
-        pool:
-          type: elastic # 연결 풀 유형 (elastic, fixed, disabled 중 하나)
-          max-idle-time: 15s # 통신 채널이 닫히기 전 대기 시간
-          max-life-time: 60s # 통신 채널 열려있는 시간
       # ??? ?? ??
       routes:
         - id: catalog-service
@@ -72,3 +83,7 @@ resilience4j:
     configs:
       default:
         timeoutDuration: 5s
+
+logging:
+  level:
+    io.github.resilience4j: DEBUG
