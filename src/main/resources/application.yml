@@ -6,6 +6,11 @@ server:
   shutdown: graceful
 
 spring:
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: polar:edge
   redis:
     connect-timeout: 2s
     host: localhost
@@ -26,6 +31,7 @@ spring:
           max-idle-time: 15s # 통신 채널이 닫히기 전 대기 시간
           max-life-time: 60s # 통신 채널 열려있는 시간
       default-filters:
+        - SaveSession
         - name: RequestRateLimiter
           args:
             redis-rate-limiter:
