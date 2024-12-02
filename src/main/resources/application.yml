@@ -24,28 +24,27 @@ spring:
         max-interval: 2000 # 2s
         multiplier: 1.1
     gateway:
-      # http client 타임아웃 설정
-      httpclient:
+      httpclient:                     # http client 타임아웃 설정
         connect-timeout: 2000
         response-timeout: 5s
         pool:
-          type: elastic # 연결 풀 유형 (elastic, fixed, disabled 중 하나)
-          max-idle-time: 15s # 통신 채널이 닫히기 전 대기 시간
-          max-life-time: 60s # 통신 채널 열려있는 시간
+          type: elastic               # 연결 풀 유형 (elastic, fixed, disabled 중 하나)
+          max-idle-time: 15s          # 통신 채널이 닫히기 전 대기 시간
+          max-life-time: 60s          # 통신 채널 열려있는 시간
       default-filters:
         - SaveSession
         - name: RequestRateLimiter
           args:
             redis-rate-limiter:
-              replenishRate: 10 # 초당 커빗에 떨어지는 토큰 수
-              burstCapacity: 20 # 최대 20개 요청까지 허용
-              requestedTokens: 1 # 하나의 요청에 처리될 토큰
+              replenishRate: 10       # 초당 커빗에 떨어지는 토큰 수
+              burstCapacity: 20       # 최대 20개 요청까지 허용
+              requestedTokens: 1      # 하나의 요청에 처리될 토큰
         # 재시도 필터 적용
         - name: Retry
           args:
             retries: 3
             methods: GET
-            series: SERVER_ERROR # 5xx 오류에 대해서만 재시도
+            series: SERVER_ERROR      # 5xx 오류에 대해서만 재시도
             exceptions: java.io.IOException, java.util.concurrent.TimeoutException
             backoff:
               firstBackoff: 50ms
@@ -53,7 +52,7 @@ spring:
               factor: 2
               basedOnPreviousValue: false
       routes:
-        - id: catalog-service
+        - id: catalog-route
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
           predicates:
             - Path=/books/**
@@ -79,10 +78,10 @@ spring:
       host: localhost
       port: 6379
       timeout: 1s
-    session:
-      timeout: 10m
-      redis:
-        namespace: polar:edge
+  session:
+    timeout: 10m
+    redis:
+      namespace: polar:edge
 
 # 서킷 브레이커와 시간 제한 설정
 # 모든 호출시 50% 이상 오류를 생성하면 - 회로 개방
@@ -91,11 +90,11 @@ spring:
 resilience4j:
   circuitbreaker:
     configs:
-      default: # 모든 서킷브레이커 기본 설정
-        slidingWindowSize: 20 # 호출 결과를 기록하는 슬라이딩 윈도 크기
-        permittedNumberOfCallsInHalfOpenState: 5 # 회로 반개방 상태일때 허용 호출 수
-        failureRateThreshold: 50 # 실패율 임계값
-        waitDurationInOpenState: 15000 # 개방 -> 반개방으로 변경되기 까지 기다릴 시간
+      default:                                    # 모든 서킷브레이커 기본 설정
+        slidingWindowSize: 20                     # 호출 결과를 기록하는 슬라이딩 윈도 크기
+        permittedNumberOfCallsInHalfOpenState: 5  # 회로 반개방 상태일때 허용 호출 수
+        failureRateThreshold: 50                  # 실패율 임계값
+        waitDurationInOpenState: 15000            # 개방 -> 반개방으로 변경되기 까지 기다릴 시간
   timelimiter:
     configs:
       default:
