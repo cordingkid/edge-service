@@ -82,6 +82,17 @@ spring:
     timeout: 10m
     redis:
       namespace: polar:edge
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: edge-service
+            client-secret: polar-keycloak-secret                        # 클라이언트가 키크록과 인증하기 위한 공유 시크릿
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/PolarBookshop      # 특정 영여에 대한 Oauth2와 OIDC 관련 모든 엔드포인트 정보를 제공하는 키킅록 URL
 
 # 서킷 브레이커와 시간 제한 설정
 # 모든 호출시 50% 이상 오류를 생성하면 - 회로 개방
