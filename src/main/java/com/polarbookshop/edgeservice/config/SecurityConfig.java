@@ -12,7 +12,7 @@ public class SecurityConfig {
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http){
         return http.authorizeExchange(exchange -> exchange.anyExchange().authenticated())       // 모든 요청에 대해 인증 해야함
-                .formLogin(Customizer.withDefaults())                                           // 로그인 양식을 사용한 사용자 인증 활성화
+                .oauth2Login(Customizer.withDefaults())                                         // OAuth2/오픈ID 커넥트를 사용한 사용자 인증 활성화
                 .build();
     }
 }
