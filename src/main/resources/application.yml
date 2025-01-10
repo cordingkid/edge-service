@@ -119,6 +119,6 @@ resilience4j:
 #  level:
 #    io.github.resilience4j: DEBUG
 
-logging:
-  level:
-    org.springframework.security: DEBUG
+#logging:
+#  level:
+#    org.springframework.security: DEBUG

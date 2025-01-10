@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@WebFluxTest(SecurityConfig.class)
+@WebFluxTest
 @Import(SecurityConfig.class)
 class SecurityConfigTest {
 
