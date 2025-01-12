@@ -33,6 +33,7 @@ spring:
           max-life-time: 60s          # 통신 채널 열려있는 시간
       default-filters:
         - SaveSession
+        - TokenRelay                  # 다른 서비스 호출시 엑세스 토큰 활성화
         - name: RequestRateLimiter
           args:
             redis-rate-limiter:
