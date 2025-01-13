@@ -94,7 +94,7 @@ spring:
           keycloak:
             client-id: edge-service
             client-secret: polar-keycloak-secret                        # 클라이언트가 키크록과 인증하기 위한 공유 시크릿
-            scope: openid
+            scope: openid, roles
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/realms/PolarBookshop      # 특정 영여에 대한 Oauth2와 OIDC 관련 모든 엔드포인트 정보를 제공하는 키킅록 URL
