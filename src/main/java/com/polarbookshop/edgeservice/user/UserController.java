@@ -24,7 +24,7 @@ public class UserController {
                 oidcUser.getPreferredUsername(),
                 oidcUser.getGivenName(),
                 oidcUser.getFamilyName(),
-                List.of("employee", "customer")
+                oidcUser.getClaimAsStringList("roles")      // roles 클레임을 추출해 문자열읠 리스트로 가져옴
         );
         return Mono.just(user);
     }
