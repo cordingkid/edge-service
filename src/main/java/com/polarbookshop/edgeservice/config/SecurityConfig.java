@@ -7,6 +7,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.server.WebSessionServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
@@ -23,6 +25,14 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 //@EnableWebFluxSecurity 이거 주석 처리시 permitAll() 무시되는 문제 해결
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
+
+    /**
+     * 웹 세션에 엑세스 토큰을 저장하기 위한 리포지토리 정의
+     */
+    @Bean
+    ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
+        return new WebSessionServerOAuth2AuthorizedClientRepository();
+    }
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(
