@@ -116,10 +116,6 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
-#logging:
-#  level:
-#    io.github.resilience4j: DEBUG
-
-#logging:
-#  level:
-#    org.springframework.security: DEBUG
+logging:
+  level:
+    io.github.resilience4j: DEBUG
