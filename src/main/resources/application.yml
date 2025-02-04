@@ -117,5 +117,7 @@ resilience4j:
         timeoutDuration: 5s
 
 logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker  # 같은 설정을 적용하기 위해 여러개의 로거를 하나의 그룹으로 묶는다.
   level:
-    io.github.resilience4j: DEBUG
+    circuitbreaker: info
