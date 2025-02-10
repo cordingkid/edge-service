@@ -116,6 +116,18 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+
 logging:
   group:
     circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker  # 같은 설정을 적용하기 위해 여러개의 로거를 하나의 그룹으로 묶는다.
